@@ -1,6 +1,5 @@
 "use strict";
-const stripe = require("stripe")
-(process.env.STRIPE_KEY);
+const stripe = require("stripe")(process.env.STRIPE_KEY);
 const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
 const { createCoreController } = require("@strapi/strapi").factories;
@@ -30,6 +29,10 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
     const { products } = ctx.request.body;
     try {
       console.log('Received products:', products);
+      if (!process.env.STRIPE_SECRET_KEY) {
+        console.error('Stripe secret key is not defined');
+        return { error: 'Stripe secret key is not defined' };
+    }
 
       const lineItems = await Promise.all(
         products.map(async (product) => {
@@ -46,7 +49,6 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
             throw new Error(`Invalid price for product with id ${item.id}`);
           }
 
-          const baseURL = "http://localhost:1337";
           // const imageURL = `${baseURL}${product?.[0]?.attributes?.img?.data?.[0]?.attributes?.formats?.small?.url}`;
 
           return {
