@@ -1,5 +1,5 @@
 "use strict";
-const stripe = require("stripe")(process.env.STRIPE_KEY);
+const stripe = require("stripe")("sk_test_51PRUtSRtnEwarTxbk5Ubr2cyaFWWL9X7VoHir0P05MPkp2Hlz1RMgvBFBU3K3ecFt848yTR4qgDTHwJxfJhHYhjJ00rQm2vyX5");
 const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
 const { createCoreController } = require("@strapi/strapi").factories;
